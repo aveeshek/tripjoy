@@ -20,7 +20,7 @@ import com.tripjoy.configuration.spring.WebServletContext;
 public class WebApp implements WebApplicationInitializer  {
 
 	private final String DISPLAY_NAME = "display-name";
-	private final String DISPlAY_VALUE = "Social Travels & Dynamic Deals";
+	private final String DISPlAY_VALUE = "tripjoy";//"Social Travels & Dynamic Deals";
 	private final String LOG4JCONFIGLOCATION = "log4jConfigLocation";
 	private final String LOG4JCONFIGLOCATION_PATH = "classpath:log4j.properties";
 	private final String DEFAULTHTMLESCAPE = "defaultHtmlEscape";
