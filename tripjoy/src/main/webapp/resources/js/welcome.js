@@ -4,17 +4,27 @@ function cover_image(val) {
 
 Ext.onReady(function () {
 
-    /** ------------------------ SAMPLE DATA ------------------------------ **/
-
-    var catagoryStore = new Ext.data.ArrayStore({
-        fields: ['id', 'genre_name'],
-        data: [
-            ['1', 'FRANCE'],
-            ['2', 'ITALY'],
-            ['3', 'GREECE']
-        ]
+    var countryStore = new Ext.data.JsonStore({
+        autoDestroy: true,
+        autoLoad: true,
+        storeId: 'countryStore',
+        proxy: {
+            type: 'ajax',
+            url: 'welcome/getCountry',
+            reader: {
+                type: 'json',
+                root: 'result',
+                idProperty: 'id'
+            }
+        },
+        fields: ['id', 'countryName']
+    });
+    
+    countryStore.on('load', function (store) {
+        Ext.getCmp('countryComboId').setValue(countryStore.getAt('0').get('id'));
     });
 
+    /** ------------------------ SAMPLE DATA ------------------------------ **/
     var subcatagoryTeeStore = Ext.create('Ext.data.TreeStore', {
         root: {
             expanded: true,
@@ -153,18 +163,15 @@ Ext.onReady(function () {
                     baseCls: 'x-plain',
                     frame: false,
                     border: false,
-                    id: 'catagoryComboId',
-                    hiddenName: 'genre',
-                    mode: 'local',
-                    store: catagoryStore,
-                    displayField: 'genre_name',
+                    id: 'countryComboId',
+                    //mode: 'local',
+                    store: countryStore,
+                    displayField: 'countryName',
                     valueField: 'id',
-                    // width : '200px',
-                    // height : '33px',
-                    value: 'CATAGORY',
                     autoSelect: true,
                     autoShow: true,
                     triggerAction: 'all',
+                    forceSelection: true,
                     listeners: {}
                 }, {
                     height: 10,
