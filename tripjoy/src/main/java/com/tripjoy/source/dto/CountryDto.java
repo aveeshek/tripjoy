@@ -2,7 +2,7 @@ package com.tripjoy.source.dto;
 
 public class CountryDto {
 
-	private int id;
+	private long id;
 
 	private String countryName;
 
@@ -10,16 +10,16 @@ public class CountryDto {
 
 	}
 
-	public CountryDto(final int id, final String countryName) {
+	public CountryDto(final long id, final String countryName) {
 		this.id = id;
 		this.countryName = countryName;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(final int id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 
@@ -35,13 +35,12 @@ public class CountryDto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ (countryName == null ? 0 : countryName
-						.hashCode());
-		result = prime * result + id;
+		result = prime * result
+				+ (countryName == null ? 0 : countryName.hashCode());
+		result = prime * result + (int) (id ^ id >>> 32);
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(final Object obj) {

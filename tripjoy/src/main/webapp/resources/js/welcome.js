@@ -3,6 +3,17 @@ function cover_image(val) {
 }
 
 Ext.onReady(function () {
+	
+	var printToConsole = function (message) {
+	    if (typeof window.console !== 'undefined') {
+	        window.console.log(message);
+	    } else if (typeof console === 'undefined') {
+	        var console = {
+	            log: function () {}
+	        };
+	        console.log(message);
+	    }
+	};
 
     var countryStore = new Ext.data.JsonStore({
         autoDestroy: true,
@@ -23,56 +34,44 @@ Ext.onReady(function () {
     countryStore.on('load', function (store) {
         Ext.getCmp('countryComboId').setValue(countryStore.getAt('0').get('id'));
     });
+    
+    var subcatagoryTeeStore = null; 
+    var reloadCounryDetails = function (combo, newValue){
+    	Ext.getCmp('subCatagoryTreePanelId').getEl().mask();
+    	 Ext.Ajax.request({
+             url: 'welcome/getCountryDetails',
+             method: 'GET',
+             params: {
+            	 countryId: newValue
+             },
+             success: function (response) {
+                 var countryDetailData = Ext.decode(response.responseText).result;
+                 subcatagoryTeeStore = Ext.create('Ext.data.TreeStore', {
+                     root: {
+                         expanded: true,
+                         children: countryDetailData
+                     }});
+                 Ext.getCmp('subCatagoryTreePanelId').reconfigure(subcatagoryTeeStore);
+                 document.getElementById('countryMapId').style.backgroundImage = "url(resources/images/map/France.png)";
+                 document.getElementById('countryMapId').style.height = "170px";
+                 document.getElementById('countryMapId').style.weight = "180px";
+                 Ext.getCmp('subCatagoryTreePanelId').getEl().unmask();
+             },
+             failure: function (response) {
+                 printToConsole(Ext.decode(response.responseText));
+                 Ext.Msg.show({
+                     title: 'Oops! Error',
+                     msg: 'Connection to the server failed. Try again or contact helpdesk.',
+                     buttons: Ext.Msg.OK,
+                     icon: Ext.Msg.ERROR
+                 });
+                 Ext.getCmp('subCatagoryTreePanelId').getEl().unmask();
+             }
+         });
+		
+    };
 
     /** ------------------------ SAMPLE DATA ------------------------------ **/
-    var subcatagoryTeeStore = Ext.create('Ext.data.TreeStore', {
-        root: {
-            expanded: true,
-            children: [{
-                iconCls: 'x-tree-noicon',
-                text: "PEOPLE (192)",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO STAY",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO EAT",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO SHOP",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACE TO SEE",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "EVENTS",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO SING",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO DANCE",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES TO TRACKING",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-                text: "PLACES FOR SHORT DISTANCE",
-                leaf: true
-            }, {
-                iconCls: 'x-tree-noicon',
-            }]
-        }
-    });
 
     Ext.define('People', {
         extend: 'Ext.data.Model',
@@ -106,18 +105,8 @@ Ext.onReady(function () {
         id: 'portalTop',
         region: 'center',
         margins: '35 5 0 0',
-        border: false/*,
-        items: [{
-            id: 'firstHalfDeckOfTop',
-            columnWidth: .5,
-            style: 'padding:0 10px 0px 10px'
-        }]*/
+        border: false
     });
-
-    /*Ext.getCmp('firstHalfDeckOfTop').add(Ext.create('ExtMVC.view.app.Portlet', {
-        html: 'Hello',
-        height: 'auto'
-    }));*/
 
     /** ------------------------------------------------------------------ **/
     var grid = Ext.create('Ext.grid.Panel', {
@@ -140,7 +129,6 @@ Ext.onReady(function () {
             width: 100
         }, {
             text: 'name',
-            //dataIndex: 'name',
             flex: 1,
             xtype: 'templatecolumn',
             tpl: '<div class="peopleName"><b>{name}</b></div><br />' +
@@ -172,7 +160,11 @@ Ext.onReady(function () {
                     autoShow: true,
                     triggerAction: 'all',
                     forceSelection: true,
-                    listeners: {}
+                    listeners: {
+                    	change: function (combo, newValue, oldValue, eOpts ) {
+                    		reloadCounryDetails(combo, newValue);
+                    	} 
+                    }
                 }, {
                     height: 10,
                     border: 0,
@@ -182,17 +174,12 @@ Ext.onReady(function () {
                     id: 'subCatagoryTreePanelId',
                     width: 150,
                     height: 210,
-                    store: subcatagoryTeeStore,
+                    store: null,
                     rootVisible: false,
                     lines: false,
                     border: false,
                     autoScroll: true,
-                    scroll: 'vertical',
-                    //bodyClsClass : 'treecontainer default-skin',
-                    // bodyCssClass: 'x-tree-noicon',
-                    style: {
-                        // left: '-25px'
-                    }
+                    scroll: 'vertical'
                 }, {
                     height: 10,
                     border: 0,
@@ -200,7 +187,7 @@ Ext.onReady(function () {
                 }, {
                     height: 300,
                     width: 180,
-                    html: '<div style="background-image: url(resources/images/italy.png); height:259px; width:180px;" />',
+                    html: '<div id="countryMapId" style="background-image: url(resources/images/map/Italy.png); height:259px; width:180px;" />',
                     border: false
                 }]
             });
