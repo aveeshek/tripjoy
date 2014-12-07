@@ -38,23 +38,26 @@ Ext.onReady(function () {
     var subcatagoryTeeStore = null; 
     var reloadCounryDetails = function (combo, newValue){
     	Ext.getCmp('subCatagoryTreePanelId').getEl().mask();
-    	 Ext.Ajax.request({
+    	Ext.Ajax.request({
              url: 'welcome/getCountryDetails',
              method: 'GET',
              params: {
             	 countryId: newValue
              },
              success: function (response) {
-                 var countryDetailData = Ext.decode(response.responseText).result;
+            	 var data = Ext.decode(response.responseText).result;
+                 var countryDetailData = data.countryDetailsTreeDtos;
+                 var mapImage = data.mapImage;
                  subcatagoryTeeStore = Ext.create('Ext.data.TreeStore', {
                      root: {
                          expanded: true,
                          children: countryDetailData
                      }});
                  Ext.getCmp('subCatagoryTreePanelId').reconfigure(subcatagoryTeeStore);
-                 document.getElementById('countryMapId').style.backgroundImage = "url(resources/images/map/France.png)";
-                 document.getElementById('countryMapId').style.height = "170px";
-                 document.getElementById('countryMapId').style.weight = "180px";
+                 
+                 document.getElementById('countryMapId').style.backgroundImage = "url(resources/images/map/"+mapImage+")";
+                 document.getElementById('countryMapId').style.height = data.height + "px";
+                 document.getElementById('countryMapId').style.weight = data.width + "px";
                  Ext.getCmp('subCatagoryTreePanelId').getEl().unmask();
              },
              failure: function (response) {
@@ -67,8 +70,7 @@ Ext.onReady(function () {
                  });
                  Ext.getCmp('subCatagoryTreePanelId').getEl().unmask();
              }
-         });
-		
+         });		
     };
 
     /** ------------------------ SAMPLE DATA ------------------------------ **/

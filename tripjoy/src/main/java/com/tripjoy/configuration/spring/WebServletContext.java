@@ -1,8 +1,13 @@
 package com.tripjoy.configuration.spring;
 
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -44,6 +49,19 @@ public class WebServletContext extends WebMvcConfigurationSupport  {
 		viewResolver.setPrefix("/WEB-INF/frontend/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
+	}
+
+	/**
+	  	<mvc:message-converters register-defaults="true">
+    		<bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>
+  		</mvc:message-converters>
+	 */
+	@Override
+	protected void configureMessageConverters(
+			final List<HttpMessageConverter<?>> converters) {
+		HttpMessageConverter<BufferedImage> converter = new BufferedImageHttpMessageConverter();
+		converters.add(converter);
+		super.configureMessageConverters(converters);
 	}
 
 }

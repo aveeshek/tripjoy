@@ -1,7 +1,15 @@
 package com.tripjoy.source.web;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.tripjoy.source.dto.CountryDetailsTreeDto;
 import com.tripjoy.source.dto.CountryDto;
 import com.tripjoy.source.dto.JsonResponse;
+import com.tripjoy.source.dto.TourDto;
 
 @Controller
 @RequestMapping("/welcome")
@@ -44,10 +53,56 @@ public class WelcomeController {
 		detailsTrees.add(new CountryDetailsTreeDto(7L, "x-tree-noicon", "PLACES TO TRACKING", true, "#", "People at this place"));
 		detailsTrees.add(new CountryDetailsTreeDto(8L, "x-tree-noicon", "PLACES FOR SHORT DISTANCE", true, "#", "People at this place"));
 		detailsTrees.add(new CountryDetailsTreeDto(0L, "x-tree-noicon", null, true, null, null));
+		TourDto tourDto = new TourDto();
+		tourDto.setCountryDetailsTreeDtos(detailsTrees);
+
+		try {
+			if(countryId == 1L) {
+				tourDto.setMapImage("France.png");
+				File file = new File(this.getClass().getClassLoader().getResource("images/map/France.png").getFile());
+				BufferedImage bimg = ImageIO.read(file);
+				tourDto.setHeight(bimg.getHeight());
+				tourDto.setWidth(bimg.getWidth());
+			} else if(countryId == 2L) {
+				tourDto.setMapImage("Italy.png");
+				File file = new File(this.getClass().getClassLoader().getResource("images/map/Italy.png").getFile());
+				BufferedImage bimg = ImageIO.read(file);
+				tourDto.setHeight(bimg.getHeight());
+				tourDto.setWidth(bimg.getWidth());
+			} else if(countryId == 3l) {
+				tourDto.setMapImage("Greece.png");
+				File file = new File(this.getClass().getClassLoader().getResource("images/map/Greece.png").getFile());
+				BufferedImage bimg = ImageIO.read(file);
+				tourDto.setHeight(bimg.getHeight());
+				tourDto.setWidth(bimg.getWidth());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		JsonResponse response = new JsonResponse();
 		response.setStatus("success");
-		response.setResult(detailsTrees);
+		response.setResult(tourDto);
 		return response;
+	}
+
+	@RequestMapping(value = "/countryImage",
+			headers = "Accept=image/jpeg, image/jpg, image/png, image/gif",
+			method = RequestMethod.GET)
+	public @ResponseBody BufferedImage getImage() {
+		try {
+			InputStream inputStream = new FileInputStream(new File(this.getClass().getClassLoader().getResource("images/map/France.png").getFile()));
+			return ImageIO.read(inputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void main (final String[] args) throws IOException {
+		InputStream inputStream = new FileInputStream(new File(new WelcomeController().getClass().getClassLoader().getResource("images/map/France.png").getFile()));
+		System.out.println(ImageIO.read(inputStream));
 	}
 
 }
