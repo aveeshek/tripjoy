@@ -321,17 +321,20 @@ Ext.onReady(function () {
 	                    id: 'portlet-1',
 	                    html: '<img src="resources/images/tiles/blue_heaven_hotels.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	                },{
 	                	id: 'portlet-3',
 	                	html: '<img src="resources/images/tiles/porto.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	                },{
 	                	id: 'portlet-5',
 	                	html: '<img src="resources/images/tiles/solva.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	                }]
 	            },{
 	                id: 'col-2',
@@ -339,17 +342,20 @@ Ext.onReady(function () {
 	                    id: 'portlet-2',
 	                    html: '<img src="resources/images/tiles/solva.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	              },{
 	            	  	id: 'portlet-4',
 	                	html: '<img src="resources/images/tiles/babis.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	                },{
 	                	id: 'portlet-6',
 	                	html: '<img src="resources/images/tiles/blue_heaven_hotels.png" height="245px" width="210px" />',
 	                    width: 210,
-	                    border: false
+	                    border: false,
+	                    disabled: true
 	                }]
 	            }]
 	            

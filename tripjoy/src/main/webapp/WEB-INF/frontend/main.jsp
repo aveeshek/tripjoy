@@ -13,10 +13,10 @@
 <script type="text/javascript" src="resources/js/ext/ext-all-debug.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/portal.css">
 <script type="text/javascript" src="resources/js/dashboard.js"></script>
-<script type="text/javascript" src="resources/js/welcome.js"></script>
+<script type="text/javascript" src="resources/js/main.js"></script>
 <!-- <script type="text/javascript" src="resources/js/ext-chart.js"></script> -->
 <!-- <link href="resources/css/boilerplate.css" rel="stylesheet" type="text/css"> -->
-<link href="resources/css/welcome.css" rel="stylesheet" type="text/css">
+<link href="resources/css/main.css" rel="stylesheet" type="text/css">
 <!-- 
 To learn more about the conditional comments around the html tags at the top of the file:
 paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
@@ -46,7 +46,7 @@ Do the following if you're using your customized build of modernizr (http://www.
 							<li>&nbsp;|&nbsp;</li>
 							<li><a href="#">Evolution</a></li>
 							<li>&nbsp;|&nbsp;</li>
-							<li><a href="main"><strong>Start Tripjoy</strong></a></li>
+							<li><a href="#"><strong>Start Tripjoy</strong></a></li>
 						</ul>
 					</nav>
 					<div id="leftNav">

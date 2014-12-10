@@ -251,10 +251,10 @@ a:active,a:hover {
 	#content {
 		clear: both;
 		top: 0px;
-		background-image:url(../images/content_background.png) !important;
+		background-image:url(../images/world-ma-tour.png) !important;
 		overflow: hidden;		
 		position: relative;
-		height: 760px;
+		height: 439px;
 		background-color: #FFF;
 		line-height: 1.9;
 		list-style: none outside none;

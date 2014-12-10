@@ -19,4 +19,10 @@ public class TripJoyPageNavigationController {
 		return "login";
 	}
 
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public String mainView() {
+		System.out.println("showing signin page");
+		return "main";
+	}
+
 }
